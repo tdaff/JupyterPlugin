@@ -1,0 +1,29 @@
+---+ !Jupyter Plugin
+
+I render Jupyter Notebooks inline.
+
+---++ Syntax Rules
+
+I have no syntax
+
+---++ Settings
+
+   * Set SHORTDESCRIPTION = Jupyter Notebook renderer
+
+---++ Plugin Info
+
+|  Plugin Author: | Foswiki:Main.TomDaff |
+|  Copyright: | 2015, Tom Daff |
+|  License: | GPL ([[http://www.gnu.org/copyleft/gpl.html][GNU General Public License]]) |
+|  Release: | %$RELEASE% |
+|  Version: | %$VERSION% |
+|  Change History: | <!-- versions below in reverse order -->&nbsp; |
+|  23 Sep 2015: | Initial version |
+|  Foswiki Dependency: | $Foswiki::Plugins::VERSION 1.1 |
+|  CPAN Dependencies: | none |
+|  Other Dependencies: | none |
+|  Perl Version: | 5.006 |
+|  Plugin Home: | http://foswiki.org/Extensions/%TOPIC% |
+|  Feedback: | http://foswiki.org/Development/%TOPIC% |
+
+__Related Topics:__ [[%SYSTEMWEB%.Plugins][Plugins]], %SYSTEMWEB%.DeveloperDocumentationCategory, %SYSTEMWEB%.AdminDocumentationCategory, %SYSTEMWEB%.DefaultPreferences
