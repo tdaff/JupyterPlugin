@@ -6,11 +6,11 @@ use IO::Handle;
 
 our $VERSION = '0.1';
 our $RELEASE = '0.1';
-our $SHORTDESCRIPTION = 'Plugin that renders Jupyter Notebooks through nbconvert';
+our $SHORTDESCRIPTION = 'Plugin that renders Jupyter Notebooks as inline HTML through nbconvert';
 our $NO_PREFS_IN_TOPIC = 0;
 our $pluginName = 'JupyterPlugin';
 
-my $nbconvert = 'JUPYTER_CONFIG_DIR=/tmp /opt/jupyter/bin/python -m nbconvert';
+my $nbconvert = $Foswiki::cfg{Plugins}{JupyterPlugin}{NbconvertPath};
 
 sub initPlugin {
     my( $topic, $web, $user, $installWeb ) = @_;
@@ -59,4 +59,3 @@ sub _JUPYTER {
 
     return $outText;
 }
-
