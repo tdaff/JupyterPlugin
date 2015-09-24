@@ -1,7 +1,7 @@
 package Foswiki::Plugins::JupyterPlugin;
 use strict;
 
-use File::Temp qw(tempfile)
+use File::Temp qw(tempfile);
 use IO::Handle;
 
 our $VERSION = '0.1';
@@ -10,7 +10,7 @@ our $SHORTDESCRIPTION = 'Plugin that renders Jupyter Notebooks through nbconvert
 our $NO_PREFS_IN_TOPIC = 0;
 our $pluginName = 'JupyterPlugin';
 
-my $jupyter = '/usr/bin/jupyter'
+my $nbconvert = 'JUPYTER_CONFIG_DIR=/tmp /opt/jupyter/bin/python -m nbconvert';
 
 sub initPlugin {
     my( $topic, $web, $user, $installWeb ) = @_;
@@ -28,14 +28,35 @@ sub _JUPYTER {
 
     Foswiki::Func::attachmentExists( $theWeb, $theTopic, $nbName ) || return 'Notebook not found '.$nbName;
 
-    # Read in the contents of the 
-    my $data = Foswiki::Func::readAttachment( $web, $topic, $a->{name} );
+    # Read in the contents of the notebook into a string
+    # Foswiki says not to access files directly!
+    my $data = Foswiki::Func::readAttachment( $theWeb, $theTopic, $nbName );
 
     my $workArea = Foswiki::Func::getWorkArea('JupyterPlugin');
-    ($fh, $filename) = tempfile(DIR => $workArea, SUFFIX => '.ipynb');
+    my ($fh, $filename) = tempfile(DIR => $workArea, SUFFIX => '.ipynb', UNLINK => 1);
     print $fh $data;
     $fh->flush();
-    my $text = `$jupyter nbconvert --to html --stdout $filename`;
+
+    my $outText = '';
+    my $inImage = 0;
+    
+    my $converted = '<noautolink>'.`$nbconvert --to html --stdout $filename`.'</noautolink>';
+
+    for (split /^/, $converted) {
+        if ( $_ =~ /base64/ ) {
+            $inImage = 1;
+        }
+        if ( $inImage ) {
+            chomp ;
+            if ( $_ =~ />/) {
+                $inImage = 0;
+            }
+        }
+        $outText .= $_;
+    }
+
     close $fh;
-    return $text;
+
+    return $outText;
 }
+
